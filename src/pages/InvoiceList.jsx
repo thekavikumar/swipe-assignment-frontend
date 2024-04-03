@@ -31,9 +31,14 @@ const InvoiceList = () => {
           {isListEmpty ? (
             <div className="d-flex flex-column align-items-center">
               <h3 className="fw-bold pb-2 pb-md-4">No invoices present</h3>
-              <Link to="/create">
-                <Button variant="primary">Create Invoice</Button>
-              </Link>
+              <div className="d-flex gap-5">
+                <Link to="/create">
+                  <Button variant="primary">Create Invoice</Button>
+                </Link>
+                <Link to="/products">
+                  <Button variant="primary">Open Products</Button>
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="d-flex flex-column">

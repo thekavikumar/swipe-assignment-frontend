@@ -133,7 +133,7 @@ const InvoiceRow = ({ invoice, navigate }) => {
         {invoice.total}
       </td>
       <td style={{ width: "5%" }}>
-        <Button variant="outline-primary" onClick={handleEditClick}>
+        <Button variant="outline-primary" onClick={handleEditClick} disabled>
           <div className="d-flex align-items-center justify-content-center gap-2">
             <BiSolidPencil />
           </div>

@@ -3,11 +3,13 @@ import { Form, Button, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, selectProductList } from "../redux/productsSlice";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { selectInvoiceList, updateInvoice } from "../redux/invoicesSlice";
 
 function ProductUpdate() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductList);
   const { id } = useParams();
+  const invoices = useSelector(selectInvoiceList);
   const intId = parseInt(id);
   const history = useNavigate();
 
@@ -24,9 +26,49 @@ function ProductUpdate() {
     event.preventDefault();
 
     dispatch(updateProduct({ id: intId, updatedProduct: formData }));
+
+    // Update invoices containing the updated product
+    invoices.forEach((invoice) => {
+      const updatedItems = invoice.items.map((item) => {
+        if (item.itemId == intId) {
+          // Create a copy of the item
+          const updatedItem = { ...item };
+
+          // Update specific fields from formData
+          if (formData.name) {
+            updatedItem.itemName = formData.name;
+          }
+          if (formData.description) {
+            updatedItem.itemDescription = formData.description;
+          }
+          if (formData.price) {
+            updatedItem.itemPrice = formData.price;
+          }
+          return updatedItem;
+        }
+        return item;
+      });
+
+      // Calculate total
+      const total = updatedItems
+        .reduce(
+          (acc, item) =>
+            acc + parseFloat(item.itemPrice) * parseInt(item.itemQuantity),
+          0
+        )
+        .toFixed(2);
+
+      // Update invoice with updated items and total
+      dispatch(
+        updateInvoice({
+          id: invoice.id,
+          updatedInvoice: { ...invoice, items: updatedItems, total: total },
+        })
+      );
+    });
+
     alert("Product updated successfully 🎉");
-    console.log("Updated product: ", formData);
-    console.log("All products: ", products);
+    console.log("invoice", invoices);
     history("/products");
   };
 

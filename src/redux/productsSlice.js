@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { updateInvoiceInInvoices } from "./invoicesSlice";
+import { updateInvoiceProduct } from "./invoicesSlice";
 
 const productsSlice = createSlice({
   name: "products",
@@ -13,11 +13,12 @@ const productsSlice = createSlice({
     },
     updateProduct: (state, action) => {
       const { id, updatedProduct } = action.payload;
-      const index = state.findIndex((product) => product.id === id);
+      const index = state.findIndex((product) => product.id == id);
       if (index !== -1) {
         state[index] = { ...state[index], ...updatedProduct };
+        // Dispatch updateInvoiceInInvoices thunk action to update invoices
+        updateInvoiceProduct(state[index]);
       }
-      updateInvoiceInInvoices(state[index]);
     },
   },
 });

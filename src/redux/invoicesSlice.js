@@ -41,11 +41,3 @@ export const {
 export const selectInvoiceList = (state) => state.invoices;
 
 export default invoicesSlice.reducer;
-
-export const updateInvoiceInInvoices =
-  (updatedProduct) => (dispatch, getState) => {
-    // Get the current state
-    const state = getState();
-    // Dispatch the updateInvoiceProduct action with the updated product
-    dispatch(updateInvoiceProduct(updatedProduct));
-  };

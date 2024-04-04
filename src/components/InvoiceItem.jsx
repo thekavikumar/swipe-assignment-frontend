@@ -56,22 +56,25 @@ const ItemRow = (props) => {
     const selectedProduct = props.productList.find((product) => {
       return product.id == selectedProductId;
     });
-    console.log(selectedProduct); // Log the product object
-
+    props.onItemizedItemEdit(
+      "itemId", // Change id to itemId
+      selectedProductId,
+      props.item.itemId
+    );
     props.onItemizedItemEdit(
       "itemDescription",
       selectedProduct.description,
-      props.item.itemId
+      selectedProductId
     );
     props.onItemizedItemEdit(
       "itemPrice",
       selectedProduct.price,
-      props.item.itemId
+      selectedProductId
     );
     props.onItemizedItemEdit(
       "itemName",
       selectedProduct.name,
-      props.item.itemId
+      selectedProductId
     );
   };
 

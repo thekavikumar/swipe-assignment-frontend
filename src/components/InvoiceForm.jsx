@@ -80,6 +80,7 @@ const InvoiceForm = () => {
       itemDescription: null,
       itemPrice: "1.00",
       itemQuantity: 1,
+      itemCategory: null,
     };
     setFormData({
       ...formData,

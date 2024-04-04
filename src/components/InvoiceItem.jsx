@@ -32,6 +32,7 @@ const InvoiceItem = (props) => {
         <thead>
           <tr>
             <th>ITEM</th>
+            <th>CATEGORY</th>
             <th>QTY</th>
             <th>PRICE/RATE</th>
             <th className="text-center">ACTION</th>
@@ -76,7 +77,7 @@ const ItemRow = (props) => {
 
   return (
     <tr>
-      <td style={{ width: "100%" }}>
+      <td style={{ width: "20%" }}>
         <select
           onChange={handleProductChange}
           className="form-select form-select-md mb-3"
@@ -89,6 +90,23 @@ const ItemRow = (props) => {
             </option>
           ))}
         </select>
+      </td>
+      <td style={{ width: "400px" }}>
+        <EditableField
+          onItemizedItemEdit={(event) => {
+            props.onItemizedItemEdit(
+              "itemCategory",
+              event.target.value,
+              props.item.itemId
+            );
+          }}
+          cellData={{
+            type: "text",
+            name: "itemCategory",
+            value: props.item.itemCategory,
+            id: props.item.itemId,
+          }}
+        />
       </td>
       <td style={{ minWidth: "70px" }}>
         <EditableField

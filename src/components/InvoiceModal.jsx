@@ -27,6 +27,24 @@ const GenerateInvoice = () => {
 };
 
 const InvoiceModal = (props) => {
+  const itemsByCategory = {};
+  props.items.forEach((item) => {
+    if (!itemsByCategory[item.itemCategory]) {
+      itemsByCategory[item.itemCategory] = [];
+    }
+    itemsByCategory[item.itemCategory].push(item);
+  });
+
+  const categorySubtotals = {};
+  Object.keys(itemsByCategory).forEach((category) => {
+    const subtotal = itemsByCategory[category].reduce((acc, item) => {
+      return acc + item.itemPrice * item.itemQuantity;
+    }, 0);
+    categorySubtotals[category] = subtotal;
+  });
+
+  console.log("itemsByCategory: ", itemsByCategory);
+
   return (
     <div>
       <Modal
@@ -76,32 +94,50 @@ const InvoiceModal = (props) => {
               </Col>
             </Row>
             <Table className="mb-0">
-              <thead>
-                <tr>
-                  <th>QTY</th>
-                  <th>DESCRIPTION</th>
-                  <th className="text-end">PRICE</th>
-                  <th className="text-end">AMOUNT</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.items.map((item, i) => {
-                  return (
-                    <tr id={i} key={i}>
-                      <td style={{ width: "70px" }}>{item.itemQuantity}</td>
-                      <td>
-                        {item.itemName} - {item.itemDescription}
-                      </td>
-                      <td className="text-end" style={{ width: "100px" }}>
-                        {props.currency} {item.itemPrice}
-                      </td>
-                      <td className="text-end" style={{ width: "100px" }}>
-                        {props.currency} {item.itemPrice * item.itemQuantity}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+              {Object.keys(itemsByCategory).map((category, index) => (
+                <div key={index} className="mt-4">
+                  <h5 className="fw-bold mb-3">{category}</h5>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th className="text-end">Price</th>
+                        <th className="text-end">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Map items within the category */}
+                      {itemsByCategory[category].map((item, i) => (
+                        <tr key={i}>
+                          <td style={{ width: "70px" }}>{item.itemQuantity}</td>
+                          <td>
+                            {item.itemName} - {item.itemDescription}
+                          </td>
+                          <td className="text-end" style={{ width: "100px" }}>
+                            {props.currency} {item.itemPrice}
+                          </td>
+                          <td className="text-end" style={{ width: "100px" }}>
+                            {props.currency}{" "}
+                            {item.itemPrice * item.itemQuantity}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    {/* Display subtotal for the category */}
+                    <tfoot>
+                      <tr>
+                        <td colSpan="3" className="text-end fw-bold">
+                          Subtotal:
+                        </td>
+                        <td className="text-end">
+                          {props.currency} {categorySubtotals[category]}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </Table>
+                </div>
+              ))}
             </Table>
             <Table>
               <tbody>

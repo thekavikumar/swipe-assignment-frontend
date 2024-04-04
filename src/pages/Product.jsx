@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Table, Button } from "react-bootstrap";
-import { BsPencil, BsTrash, BsPlus } from "react-icons/bs";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectProductList } from "../redux/productsSlice";
@@ -19,9 +19,9 @@ function Product() {
     <Container>
       <h1 className="mt-4 mb-3">Products</h1>
       <div className="mb-3 d-flex flex-wrap justify-content-between">
-        <Link to="/create-product">
-          <Button variant="success" className="mb-3 mb-md-0">
-            <BsPlus /> Create Product
+        <Link to="/create-product" className="flex ">
+          <Button variant="primary" className=" mb-2 mb-md-0">
+            Add Product
           </Button>
         </Link>
         <Link to="/">
@@ -29,15 +29,21 @@ function Product() {
         </Link>
       </div>
       <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th className="p-2">ID</th>
-            <th className="p-2">Name</th>
-            <th className="p-2">Description</th>
-            <th className="p-2">Price</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
+        {products?.length === 0 ? (
+          <h5 className="align-text-center">No Product Found</h5>
+        ) : (
+          <>
+            <thead>
+              <tr>
+                <th className="p-2">ID</th>
+                <th className="p-2">Name</th>
+                <th className="p-2">Description</th>
+                <th className="p-2">Price</th>
+                <th className="p-2">Actions</th>
+              </tr>
+            </thead>
+          </>
+        )}
         <tbody>
           {products?.map((product) => (
             <tr key={product?.id}>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, selectProductList } from "../redux/productsSlice";
-import { Link, useParams, useNavigate } from "react-router-dom";
 import { selectInvoiceList, updateInvoice } from "../redux/invoicesSlice";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 function ProductUpdate() {
   const dispatch = useDispatch();
@@ -22,54 +22,47 @@ function ProductUpdate() {
     price: productToUpdate?.price,
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(updateProduct({ id: intId, updatedProduct: formData }));
+    if (validateForm()) {
+      dispatch(updateProduct({ id: intId, updatedProduct: formData }));
 
-    // Update invoices containing the updated product
-    invoices.forEach((invoice) => {
-      const updatedItems = invoice.items.map((item) => {
-        if (item.itemId == intId) {
-          // Create a copy of the item
-          const updatedItem = { ...item };
+      // Update invoices containing the updated product
+      invoices.forEach((invoice) => {
+        const updatedItems = invoice.items.map((item) => {
+          if (item.itemId === intId) {
+            return {
+              ...item,
+              itemName: formData.name,
+              itemDescription: formData.description,
+              itemPrice: formData.price,
+            };
+          }
+          return item;
+        });
 
-          // Update specific fields from formData
-          if (formData.name) {
-            updatedItem.itemName = formData.name;
-          }
-          if (formData.description) {
-            updatedItem.itemDescription = formData.description;
-          }
-          if (formData.price) {
-            updatedItem.itemPrice = formData.price;
-          }
-          return updatedItem;
-        }
-        return item;
+        const total = updatedItems
+          .reduce(
+            (acc, item) =>
+              acc + parseFloat(item.itemPrice) * parseInt(item.itemQuantity),
+            0
+          )
+          .toFixed(2);
+
+        dispatch(
+          updateInvoice({
+            id: invoice.id,
+            updatedInvoice: { ...invoice, items: updatedItems, total: total },
+          })
+        );
       });
 
-      // Calculate total
-      const total = updatedItems
-        .reduce(
-          (acc, item) =>
-            acc + parseFloat(item.itemPrice) * parseInt(item.itemQuantity),
-          0
-        )
-        .toFixed(2);
-
-      // Update invoice with updated items and total
-      dispatch(
-        updateInvoice({
-          id: invoice.id,
-          updatedInvoice: { ...invoice, items: updatedItems, total: total },
-        })
-      );
-    });
-
-    alert("Product updated successfully 🎉");
-    console.log("invoice", invoices);
-    history("/products");
+      alert("Product updated successfully 🎉");
+      history("/products");
+    }
   };
 
   const handleChange = (event) => {
@@ -78,6 +71,35 @@ function ProductUpdate() {
       ...formData,
       [name]: value,
     });
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const errors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+      valid = false;
+    }
+
+    if (!formData.description.trim()) {
+      errors.description = "Description is required";
+      valid = false;
+    }
+
+    if (!formData.price.trim()) {
+      errors.price = "Price is required";
+      valid = false;
+    } else if (isNaN(formData.price)) {
+      errors.price = "Price must be a number";
+      valid = false;
+    } else if (parseFloat(formData.price) <= 0) {
+      errors.price = "Price must be greater than zero";
+      valid = false;
+    }
+
+    setErrors(errors);
+    return valid;
   };
 
   return (
@@ -91,7 +113,7 @@ function ProductUpdate() {
             placeholder="Enter product ID"
             name="id"
             value={formData.id}
-            disabled // Disable editing of product ID
+            disabled
           />
         </Form.Group>
 
@@ -103,10 +125,14 @@ function ProductUpdate() {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
+            isInvalid={!!errors.name}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.name}
+          </Form.Control.Feedback>
         </Form.Group>
-        <Form.Group controlId="productName">
+
+        <Form.Group controlId="productDescription">
           <Form.Label>Product Description</Form.Label>
           <Form.Control
             type="text"
@@ -114,8 +140,11 @@ function ProductUpdate() {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            required
+            isInvalid={!!errors.description}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.description}
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="productPrice">
@@ -126,8 +155,11 @@ function ProductUpdate() {
             name="price"
             value={formData.price}
             onChange={handleChange}
-            required
+            isInvalid={!!errors.price}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.price}
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Button variant="primary" type="submit">

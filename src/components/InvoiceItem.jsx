@@ -56,11 +56,7 @@ const ItemRow = (props) => {
     const selectedProduct = props.productList.find((product) => {
       return product.id == selectedProductId;
     });
-    props.onItemizedItemEdit(
-      "itemId", // Change id to itemId
-      selectedProductId,
-      props.item.itemId
-    );
+    props.onItemizedItemEdit("itemId", selectedProductId, props.item.itemId);
     props.onItemizedItemEdit(
       "itemDescription",
       selectedProduct.description,
@@ -81,7 +77,11 @@ const ItemRow = (props) => {
   return (
     <tr>
       <td style={{ width: "100%" }}>
-        <select onChange={handleProductChange}>
+        <select
+          onChange={handleProductChange}
+          className="form-select form-select-md mb-3"
+          aria-label=".form-select-md example"
+        >
           <option value="">Select Product</option>
           {props.productList.map((product) => (
             <option key={product.id} value={product.id}>
@@ -109,7 +109,7 @@ const ItemRow = (props) => {
           }}
         />
       </td>
-      <td style={{ minWidth: "130px" }}>
+      <td style={{ minWidth: "130px", fontSize: "15px" }}>
         {props.currency}
         {props.item.itemPrice}
       </td>

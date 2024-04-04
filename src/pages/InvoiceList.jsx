@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BiSolidPencil, BiTrash } from "react-icons/bi";
 import { BsEyeFill } from "react-icons/bs";
@@ -14,39 +14,26 @@ const InvoiceList = () => {
   const isListEmpty = invoiceList.length === 0;
   const [copyId, setCopyId] = useState("");
   const navigate = useNavigate();
+
   const handleCopyClick = () => {
     const invoice = getOneInvoice(copyId);
     if (!invoice) {
-      alert("Please enter the valid invoice id.");
+      alert("Please enter a valid invoice id.");
     } else {
       navigate(`/create/${copyId}`);
     }
   };
 
-  console.log(invoiceList);
-
   return (
-    <Row>
-      <Col className="mx-auto" xs={12} md={8} lg={9}>
-        <h3 className="fw-bold pb-2 pb-md-4 text-center">Swipe Assignment</h3>
-        <Card className="d-flex p-3 p-md-4 my-3 my-md-4 ">
-          {isListEmpty ? (
-            <div className="d-flex flex-column align-items-center">
-              <h3 className="fw-bold pb-2 pb-md-4">No invoices present</h3>
-              <div className="d-flex gap-5">
-                <Link to="/create">
-                  <Button variant="primary">Create Invoice</Button>
-                </Link>
-                <Link to="/products">
-                  <Button variant="primary">Open Products</Button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="d-flex flex-column">
-              <div className="d-flex flex-row align-items-center justify-content-between">
-                <h3 className="fw-bold pb-2 pb-md-4">Invoice List</h3>
-                <div className="d-flex gap-5">
+    <Container fluid>
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={9}>
+          <h3 className="fw-bold pb-2 pb-md-4 text-center">Swipe Assignment</h3>
+          <Card className="p-3 p-md-4 my-3 my-md-4">
+            {isListEmpty ? (
+              <div className="d-flex flex-column align-items-center">
+                <h3 className="fw-bold pb-2 pb-md-4">No invoices present</h3>
+                <div className="d-flex gap-3 justify-content-center">
                   <Link to="/create">
                     <Button variant="primary">Create Invoice</Button>
                   </Link>
@@ -54,49 +41,64 @@ const InvoiceList = () => {
                     <Button variant="primary">Open Products</Button>
                   </Link>
                 </div>
-
-                <div className="d-flex gap-2">
-                  <Button variant="dark mb-2 mb-md-4" onClick={handleCopyClick}>
-                    Copy Invoice
-                  </Button>
-
-                  <input
-                    type="text"
-                    value={copyId}
-                    onChange={(e) => setCopyId(e.target.value)}
-                    placeholder="Enter Invoice ID to copy"
-                    className="bg-white border"
-                    style={{
-                      height: "50px",
-                    }}
-                  />
-                </div>
               </div>
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>Invoice No.</th>
-                    <th>Bill To</th>
-                    <th>Due Date</th>
-                    <th>Total Amt.</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoiceList.map((invoice) => (
-                    <InvoiceRow
-                      key={invoice.id}
-                      invoice={invoice}
-                      navigate={navigate}
+            ) : (
+              <div className="d-flex flex-column">
+                <div className="d-flex flex-row align-items-center justify-content-between">
+                  <h3 className="fw-bold pb-2 pb-md-4">Invoice List</h3>
+                  <div className="d-flex gap-3 justify-content-center">
+                    <Link to="/create">
+                      <Button variant="primary">Create Invoice</Button>
+                    </Link>
+                    <Link to="/products">
+                      <Button variant="primary">Open Products</Button>
+                    </Link>
+                  </div>
+                  <div className="d-flex gap-2 justify-content-center">
+                    <Button
+                      variant="dark mb-2 mb-md-4"
+                      onClick={handleCopyClick}
+                    >
+                      Copy Invoice
+                    </Button>
+                    <input
+                      type="text"
+                      value={copyId}
+                      onChange={(e) => setCopyId(e.target.value)}
+                      placeholder="Enter Invoice ID to copy"
+                      className="bg-white border"
+                      style={{
+                        height: "38px",
+                      }}
                     />
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          )}
-        </Card>
-      </Col>
-    </Row>
+                  </div>
+                </div>
+                <Table responsive>
+                  <thead>
+                    <tr>
+                      <th>Invoice No.</th>
+                      <th>Bill To</th>
+                      <th>Due Date</th>
+                      <th>Total Amt.</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {invoiceList.map((invoice) => (
+                      <InvoiceRow
+                        key={invoice.id}
+                        invoice={invoice}
+                        navigate={navigate}
+                      />
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

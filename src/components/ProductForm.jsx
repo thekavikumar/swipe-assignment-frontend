@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+// ProductForm.js
+
+import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, selectProductList } from "../redux/productsSlice";
 import generateRandomId from "../utils/generateRandomId";
-import { Link, useNavigate } from "react-router-dom"; // Import useHistory
+import { Link } from "react-router-dom";
 
 function ProductForm() {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ function ProductForm() {
   const [formData, setFormData] = useState({
     id: generateUniqueProductId(products),
     name: "",
+    description: "",
     price: "",
   });
 
@@ -31,15 +34,17 @@ function ProductForm() {
     setFormData({
       id: generateUniqueProductId(products),
       name: "",
+      description: "",
       price: "",
     });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const parsedValue = name === "price" ? parseFloat(value) : value;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: parsedValue,
     });
   };
 
@@ -66,6 +71,19 @@ function ProductForm() {
             placeholder="Enter product name"
             name="name"
             value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="productDescription">
+          <Form.Label>Product Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="Enter product description"
+            name="description"
+            value={formData.description}
             onChange={handleChange}
             required
           />

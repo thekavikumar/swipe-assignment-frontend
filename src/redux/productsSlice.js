@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateInvoiceInInvoices } from "./invoicesSlice";
 
 const productsSlice = createSlice({
   name: "products",
@@ -16,6 +17,7 @@ const productsSlice = createSlice({
       if (index !== -1) {
         state[index] = { ...state[index], ...updatedProduct };
       }
+      updateInvoiceInInvoices(state[index]);
     },
   },
 });

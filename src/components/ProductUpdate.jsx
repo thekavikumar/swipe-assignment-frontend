@@ -16,6 +16,7 @@ function ProductUpdate() {
   const [formData, setFormData] = useState({
     id: intId,
     name: productToUpdate?.name,
+    description: productToUpdate?.description,
     price: productToUpdate?.price,
   });
 
@@ -59,6 +60,17 @@ function ProductUpdate() {
             placeholder="Enter product name"
             name="name"
             value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="productName">
+          <Form.Label>Product Description</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter product description"
+            name="description"
+            value={formData.description}
             onChange={handleChange}
             required
           />

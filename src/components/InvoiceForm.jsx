@@ -9,11 +9,12 @@ import InvoiceItem from "./InvoiceItem";
 import InvoiceModal from "./InvoiceModal";
 import { BiArrowBack } from "react-icons/bi";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addInvoice, updateInvoice } from "../redux/invoicesSlice";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import generateRandomId from "../utils/generateRandomId";
 import { useInvoiceListData } from "../redux/hooks";
+import { selectProductList } from "../redux/productsSlice";
 
 const InvoiceForm = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const InvoiceForm = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [copyId, setCopyId] = useState("");
+  const productList = useSelector(selectProductList);
   const { getOneInvoice, listSize } = useInvoiceListData();
   const [formData, setFormData] = useState(
     isEdit
@@ -126,6 +128,7 @@ const InvoiceForm = () => {
   };
 
   const onItemizedItemEdit = (evt, id) => {
+    console.log(evt.target.name, evt.target.value, id);
     const updatedItems = formData.items.map((oldItem) => {
       if (oldItem.itemId === id) {
         return { ...oldItem, [evt.target.name]: evt.target.value };
@@ -307,6 +310,7 @@ const InvoiceForm = () => {
               onRowDel={handleRowDel}
               currency={formData.currency}
               items={formData.items}
+              productList={productList}
             />
             <Row className="mt-4 justify-content-end">
               <Col lg={6}>

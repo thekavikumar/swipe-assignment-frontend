@@ -18,6 +18,16 @@ const invoicesSlice = createSlice({
         state[index] = action.payload.updatedInvoice;
       }
     },
+    updateInvoiceProduct: (state, action) => {
+      state.forEach((invoice) => {
+        const index = invoice.items.findIndex(
+          (item) => item.productId === action.payload.id
+        );
+        if (index !== -1) {
+          invoice.items[index].product = action.payload.updatedProduct;
+        }
+      });
+    },
   },
 });
 
@@ -25,8 +35,17 @@ export const {
   addInvoice,
   deleteInvoice,
   updateInvoice,
+  updateInvoiceProduct,
 } = invoicesSlice.actions;
 
 export const selectInvoiceList = (state) => state.invoices;
 
 export default invoicesSlice.reducer;
+
+export const updateInvoiceInInvoices =
+  (updatedProduct) => (dispatch, getState) => {
+    // Get the current state
+    const state = getState();
+    // Dispatch the updateInvoiceProduct action with the updated product
+    dispatch(updateInvoiceProduct(updatedProduct));
+  };

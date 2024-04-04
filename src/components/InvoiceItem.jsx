@@ -6,7 +6,14 @@ import { BiTrash } from "react-icons/bi";
 import EditableField from "./EditableField";
 
 const InvoiceItem = (props) => {
-  const { onItemizedItemEdit, currency, onRowDel, items, onRowAdd } = props;
+  const {
+    onItemizedItemEdit,
+    currency,
+    onRowDel,
+    items,
+    onRowAdd,
+    productList,
+  } = props;
 
   const itemTable = items.map((item) => (
     <ItemRow
@@ -15,6 +22,7 @@ const InvoiceItem = (props) => {
       onDelEvent={onRowDel}
       onItemizedItemEdit={onItemizedItemEdit}
       currency={currency}
+      productList={productList}
     />
   ));
 
@@ -42,33 +50,62 @@ const ItemRow = (props) => {
   const onDelEvent = () => {
     props.onDelEvent(props.item);
   };
+
+  const handleProductChange = (event) => {
+    const selectedProductId = event.target.value;
+    const selectedProduct = props.productList.find((product) => {
+      console.log(product.id == selectedProductId); // Log the product object
+      return product.id == selectedProductId;
+    });
+
+    console.log("product: ", selectedProduct);
+    console.log("id: ", selectedProductId);
+    console.log("list: ", props.productList);
+
+    // Log the id of the selected product
+
+    props.onItemizedItemEdit(
+      {
+        target: {
+          name: "itemName",
+          value: selectedProduct?.name,
+        },
+      },
+      props.item.itemId
+    );
+    props.onItemizedItemEdit(
+      {
+        target: {
+          name: "itemDescription",
+          value: selectedProduct?.description,
+        },
+      },
+      props.item.itemId
+    );
+    props.onItemizedItemEdit(
+      {
+        target: {
+          name: "itemPrice",
+          value: selectedProduct?.price,
+        },
+      },
+      props.item.itemId
+    );
+
+    console.log(props.productList);
+  };
+
   return (
     <tr>
       <td style={{ width: "100%" }}>
-        <EditableField
-          onItemizedItemEdit={(evt) =>
-            props.onItemizedItemEdit(evt, props.item.itemId)
-          }
-          cellData={{
-            type: "text",
-            name: "itemName",
-            placeholder: "Item name",
-            value: props.item.itemName,
-            id: props.item.itemId,
-          }}
-        />
-        <EditableField
-          onItemizedItemEdit={(evt) =>
-            props.onItemizedItemEdit(evt, props.item.itemId)
-          }
-          cellData={{
-            type: "text",
-            name: "itemDescription",
-            placeholder: "Item description",
-            value: props.item.itemDescription,
-            id: props.item.itemId,
-          }}
-        />
+        <select onChange={handleProductChange}>
+          <option value="">Select Product</option>
+          {props.productList.map((product) => (
+            <option key={product.id} value={product.id}>
+              {product.name}
+            </option>
+          ))}
+        </select>
       </td>
       <td style={{ minWidth: "70px" }}>
         <EditableField
@@ -86,22 +123,8 @@ const ItemRow = (props) => {
         />
       </td>
       <td style={{ minWidth: "130px" }}>
-        <EditableField
-          onItemizedItemEdit={(evt) =>
-            props.onItemizedItemEdit(evt, props.item.itemId)
-          }
-          cellData={{
-            leading: props.currency,
-            type: "number",
-            name: "itemPrice",
-            min: 1,
-            step: "0.01",
-            presicion: 2,
-            textAlign: "text-end",
-            value: props.item.itemPrice,
-            id: props.item.itemId,
-          }}
-        />
+        {props.currency}
+        {props.item.itemPrice}
       </td>
       <td className="text-center" style={{ minWidth: "50px" }}>
         <BiTrash

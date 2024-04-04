@@ -35,6 +35,7 @@ function Product() {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Price</th>
             <th>Actions</th>
           </tr>
@@ -44,6 +45,7 @@ function Product() {
             <tr key={product?.id}>
               <td>{product?.id}</td>
               <td>{product?.name}</td>
+              <td>{product?.description}</td>
               <td>{product?.price}</td>
               <td>
                 <Link to={`/edit-product/${product?.id}`}>

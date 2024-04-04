@@ -22,13 +22,3 @@ Explore our live demo [here](https://swipe-assignment-frontend-beta.vercel.app/)
 
 - ![Bootstrap](https://img.shields.io/badge/Bootstrap-4.5.2-purple) - Leveraging the power of Bootstrap, our system ensures responsiveness and rapid website prototyping.
 
-## Getting Started
-
-To embark on your journey with the Swipe Assignment Product Management System, simply clone the repository and follow the instructions provided in the README files of both the backend and frontend repositories.
-
-```bash
-git clone <repository-url>
-cd <repository-folder>
-npm install
-npm start
-```

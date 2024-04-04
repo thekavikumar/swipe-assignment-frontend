@@ -92,7 +92,7 @@ function ProductForm() {
           />
         </Form.Group>
 
-        <Form.Group controlId="productName">
+        <Form.Group controlId="productName" className="mt-3">
           <Form.Label>Product Name</Form.Label>
           <Form.Control
             type="text"
@@ -107,7 +107,7 @@ function ProductForm() {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="productDescription">
+        <Form.Group controlId="productDescription" className="mt-3">
           <Form.Label>Product Description</Form.Label>
           <Form.Control
             as="textarea"
@@ -123,8 +123,8 @@ function ProductForm() {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="productPrice">
-          <Form.Label>Price</Form.Label>
+        <Form.Group controlId="productPrice" className="mt-3">
+          <Form.Label>Price($)</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter product price"
@@ -137,22 +137,23 @@ function ProductForm() {
             {errors.price}
           </Form.Control.Feedback>
         </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-
-        <Link to="/products">
-          <Button variant="secondary" className="ms-2">
-            Go to Products
+        <div className="d-flex align-items-center gap-2 mt-3">
+          <Button variant="primary" type="submit">
+            Submit
           </Button>
-        </Link>
 
-        <Link to="/">
-          <Button variant="secondary" className="ms-2">
-            Go to Home
-          </Button>
-        </Link>
+          <Link to="/products">
+            <Button variant="secondary" className="ms-2">
+              Go to Products
+            </Button>
+          </Link>
+
+          <Link to="/">
+            <Button variant="secondary" className="ms-2">
+              Go to Home
+            </Button>
+          </Link>
+        </div>
       </Form>
     </Container>
   );

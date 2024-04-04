@@ -89,9 +89,13 @@ const ItemRow = (props) => {
       </td>
       <td style={{ minWidth: "70px" }}>
         <EditableField
-          onItemizedItemEdit={(evt) =>
-            props.onItemizedItemEdit(evt, props.item.itemId)
-          }
+          onItemizedItemEdit={(event) => {
+            props.onItemizedItemEdit(
+              "itemQuantity",
+              event.target.value,
+              props.item.itemId
+            );
+          }}
           cellData={{
             type: "number",
             name: "itemQuantity",

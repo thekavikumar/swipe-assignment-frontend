@@ -23,6 +23,8 @@ const InvoiceList = () => {
     }
   };
 
+  console.log(invoiceList);
+
   return (
     <Row>
       <Col className="mx-auto" xs={12} md={8} lg={9}>
@@ -44,9 +46,14 @@ const InvoiceList = () => {
             <div className="d-flex flex-column">
               <div className="d-flex flex-row align-items-center justify-content-between">
                 <h3 className="fw-bold pb-2 pb-md-4">Invoice List</h3>
-                <Link to="/create">
-                  <Button variant="primary mb-2 mb-md-4">Create Invoice</Button>
-                </Link>
+                <div className="d-flex gap-5">
+                  <Link to="/create">
+                    <Button variant="primary">Create Invoice</Button>
+                  </Link>
+                  <Link to="/products">
+                    <Button variant="primary">Open Products</Button>
+                  </Link>
+                </div>
 
                 <div className="d-flex gap-2">
                   <Button variant="dark mb-2 mb-md-4" onClick={handleCopyClick}>

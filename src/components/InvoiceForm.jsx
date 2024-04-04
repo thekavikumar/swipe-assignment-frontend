@@ -56,15 +56,7 @@ const InvoiceForm = () => {
           discountRate: "",
           discountAmount: "0.00",
           currency: "$",
-          items: [
-            {
-              itemId: 0,
-              itemName: "",
-              itemDescription: "",
-              itemPrice: "1.00",
-              itemQuantity: 1,
-            },
-          ],
+          items: [],
         }
   );
 
@@ -84,8 +76,8 @@ const InvoiceForm = () => {
     const id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
     const newItem = {
       itemId: id,
-      itemName: "",
-      itemDescription: "",
+      itemName: null,
+      itemDescription: null,
       itemPrice: "1.00",
       itemQuantity: 1,
     };
@@ -126,17 +118,17 @@ const InvoiceForm = () => {
       };
     });
   };
-
-  const onItemizedItemEdit = (evt, id) => {
-    console.log(evt.target.name, evt.target.value, id);
-    const updatedItems = formData.items.map((oldItem) => {
-      if (oldItem.itemId === id) {
-        return { ...oldItem, [evt.target.name]: evt.target.value };
-      }
-      return oldItem;
-    });
-
-    setFormData({ ...formData, items: updatedItems });
+  const onItemizedItemEdit = (fieldName, fieldValue, id) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      items: prevFormData.items.map((oldItem) => {
+        if (oldItem.itemId === id) {
+          // Update only the specific field
+          return { ...oldItem, [fieldName]: fieldValue };
+        }
+        return oldItem;
+      }),
+    }));
     handleCalculateTotal();
   };
 
@@ -167,6 +159,7 @@ const InvoiceForm = () => {
       dispatch(addInvoice({ id: generateRandomId(), ...formData }));
       alert("Invoice added successfuly 🥳");
     } else {
+      console.log("Adding invoice", formData);
       dispatch(addInvoice(formData));
       alert("Invoice added successfuly 🥳");
     }

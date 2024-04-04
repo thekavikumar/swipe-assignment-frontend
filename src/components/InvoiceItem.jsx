@@ -54,45 +54,25 @@ const ItemRow = (props) => {
   const handleProductChange = (event) => {
     const selectedProductId = event.target.value;
     const selectedProduct = props.productList.find((product) => {
-      console.log(product.id == selectedProductId); // Log the product object
       return product.id == selectedProductId;
     });
-
-    console.log("product: ", selectedProduct);
-    console.log("id: ", selectedProductId);
-    console.log("list: ", props.productList);
-
-    // Log the id of the selected product
+    console.log(selectedProduct); // Log the product object
 
     props.onItemizedItemEdit(
-      {
-        target: {
-          name: "itemName",
-          value: selectedProduct?.name,
-        },
-      },
+      "itemDescription",
+      selectedProduct.description,
       props.item.itemId
     );
     props.onItemizedItemEdit(
-      {
-        target: {
-          name: "itemDescription",
-          value: selectedProduct?.description,
-        },
-      },
+      "itemPrice",
+      selectedProduct.price,
       props.item.itemId
     );
     props.onItemizedItemEdit(
-      {
-        target: {
-          name: "itemPrice",
-          value: selectedProduct?.price,
-        },
-      },
+      "itemName",
+      selectedProduct.name,
       props.item.itemId
     );
-
-    console.log(props.productList);
   };
 
   return (

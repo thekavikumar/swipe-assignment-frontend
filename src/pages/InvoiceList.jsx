@@ -46,7 +46,7 @@ const InvoiceList = () => {
               <div className="d-flex flex-column">
                 <div className="d-flex flex-row align-items-center justify-content-between">
                   <h3 className="fw-bold pb-2 pb-md-4">Invoice List</h3>
-                  <div className="d-flex gap-3 justify-content-center">
+                  <div className="d-flex gap-3 align-items-center justify-content-center">
                     <Link to="/create">
                       <Button variant="primary">Create Invoice</Button>
                     </Link>
@@ -133,7 +133,7 @@ const InvoiceRow = ({ invoice, navigate }) => {
         {invoice.total}
       </td>
       <td style={{ width: "5%" }}>
-        <Button variant="outline-primary" onClick={handleEditClick} disabled>
+        <Button variant="outline-primary" onClick={handleEditClick}>
           <div className="d-flex align-items-center justify-content-center gap-2">
             <BiSolidPencil />
           </div>

@@ -13,6 +13,7 @@ const InvoiceItem = (props) => {
     items,
     onRowAdd,
     productList,
+    isEdit,
   } = props;
 
   const itemTable = items.map((item) => (
@@ -23,6 +24,7 @@ const InvoiceItem = (props) => {
       onItemizedItemEdit={onItemizedItemEdit}
       currency={currency}
       productList={productList}
+      isEdit={isEdit}
     />
   ));
 
@@ -78,18 +80,30 @@ const ItemRow = (props) => {
   return (
     <tr>
       <td style={{ width: "20%" }}>
-        <select
-          onChange={handleProductChange}
-          className="form-select form-select-md mb-3"
-          aria-label=".form-select-md example"
-        >
-          <option value="">Select Product</option>
-          {props.productList.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name}
-            </option>
-          ))}
-        </select>
+        {props.isEdit ? (
+          <EditableField
+            cellData={{
+              type: "text",
+              name: "itemName",
+              value: props.item.itemName,
+              id: props.item.itemId,
+              disabled: true,
+            }}
+          />
+        ) : (
+          <select
+            onChange={handleProductChange}
+            className="form-select form-select-md mb-3"
+            aria-label=".form-select-md example"
+          >
+            <option value="">Select Product</option>
+            {props.productList.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
+        )}
       </td>
       <td style={{ width: "400px" }}>
         <EditableField

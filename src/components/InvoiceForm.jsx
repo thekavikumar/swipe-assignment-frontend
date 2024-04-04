@@ -154,6 +154,7 @@ const InvoiceForm = () => {
 
   const handleAddInvoice = () => {
     if (isEdit) {
+      console.log("Updating invoice", formData);
       dispatch(updateInvoice({ id: params.id, updatedInvoice: formData }));
       alert("Invoice updated successfuly 🥳");
     } else if (isCopy) {
@@ -305,6 +306,7 @@ const InvoiceForm = () => {
               currency={formData.currency}
               items={formData.items}
               productList={productList}
+              isEdit={isEdit}
             />
             <Row className="mt-4 justify-content-end">
               <Col lg={6}>

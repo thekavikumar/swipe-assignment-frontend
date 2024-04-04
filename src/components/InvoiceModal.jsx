@@ -43,8 +43,6 @@ const InvoiceModal = (props) => {
     categorySubtotals[category] = subtotal;
   });
 
-  console.log("itemsByCategory: ", itemsByCategory);
-
   return (
     <div>
       <Modal

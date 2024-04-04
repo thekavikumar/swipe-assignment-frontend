@@ -1,3 +1,6 @@
+![Safari (Big Sur) - Light](https://github.com/thekavikumar/swipe-assignment-frontend/assets/50093149/c1086210-d5e9-4fa0-98a6-3b6f6fec4b2a)
+
+
 # Swipe Assignment - React Developer Intern
 
 Welcome to Swipe Assignment's! This comprehensive system streamlines invoice creation, ensuring seamless navigation, dynamic updates, validation, and convenient product grouping. Crafted with cutting-edge technologies like React.js and Bootstrap, it offers a modern, responsive, and intuitive user interface.

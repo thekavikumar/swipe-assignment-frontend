@@ -11,14 +11,17 @@ function ProductForm() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductList);
 
+  // Function to generate a unique product ID
   const generateUniqueProductId = (products) => {
     let newId = generateRandomId();
+    // Check if the generated ID already exists in the products list
     while (products.find((product) => product.id === newId)) {
       newId = generateRandomId();
     }
     return newId;
   };
 
+  // State to manage form data
   const [formData, setFormData] = useState({
     id: generateUniqueProductId(products),
     name: "",
@@ -26,11 +29,15 @@ function ProductForm() {
     price: "",
   });
 
+  // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    // Dispatch action to add product
     dispatch(addProduct(formData));
+    // Show success alert
     alert("Product added successfully 🥳");
+    // Clear form data after submission
     setFormData({
       id: generateUniqueProductId(products),
       name: "",
@@ -39,8 +46,10 @@ function ProductForm() {
     });
   };
 
+  // Function to handle form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
+    // Parse the value of price field to float
     const parsedValue = name === "price" ? parseFloat(value) : value;
     setFormData({
       ...formData,
@@ -52,6 +61,7 @@ function ProductForm() {
     <Container>
       <h1>Create Product</h1>
       <Form onSubmit={handleSubmit}>
+        {/* Product ID Input */}
         <Form.Group controlId="productId">
           <Form.Label>Product ID</Form.Label>
           <Form.Control
@@ -64,6 +74,7 @@ function ProductForm() {
           />
         </Form.Group>
 
+        {/* Product Name Input */}
         <Form.Group controlId="productName">
           <Form.Label>Product Name</Form.Label>
           <Form.Control
@@ -76,6 +87,7 @@ function ProductForm() {
           />
         </Form.Group>
 
+        {/* Product Description Input */}
         <Form.Group controlId="productDescription">
           <Form.Label>Product Description</Form.Label>
           <Form.Control
@@ -89,6 +101,7 @@ function ProductForm() {
           />
         </Form.Group>
 
+        {/* Product Price Input */}
         <Form.Group controlId="productPrice">
           <Form.Label>Price</Form.Label>
           <Form.Control
@@ -101,10 +114,12 @@ function ProductForm() {
           />
         </Form.Group>
 
+        {/* Submit Button */}
         <Button variant="primary" type="submit">
           Submit
         </Button>
 
+        {/* Links to other pages */}
         <Link to="/products">
           <Button variant="secondary" className="ms-2">
             Go to Products
